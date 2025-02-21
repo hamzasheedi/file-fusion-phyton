@@ -72,13 +72,16 @@ if uploaded_files:
         df = None  
         new_file_name = file.name  
 
-        # Read file based on extension
+        # Read file extension
         if file_ext == ".csv":
             df = pd.read_csv(file)
-
         elif file_ext == ".xlsx":
             df = pd.read_excel(file)
+        else:
+            st.error(f"❌ Unsupported file type: {file_ext}")
+            continue
 
+        
         # File Info
         st.success(f"✅ **Uploaded:** {file.name} ({file.size} bytes)")
 
