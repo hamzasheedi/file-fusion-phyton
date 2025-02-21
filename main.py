@@ -3,7 +3,6 @@ import pandas as pd
 import os
 from io import BytesIO
 from PIL import Image  
-import openpyxl
 
 
 st.set_page_config(page_title="File Fusion", layout='wide')
