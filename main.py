@@ -2,21 +2,25 @@ import streamlit as st
 import pandas as pd
 import os
 from io import BytesIO
-from PIL import Image  
+from PIL import Image
+import openpyxl  
 
 
 st.set_page_config(page_title="File Fusion", layout='wide')
 
 
-#buffer and mime
-buffer = BytesIO()
-mime_type = "application/octet-stream"  
 
-#guide
+# buffer and mime
+buffer = BytesIO()
+mime_type = "application/octet-stream"
+
+
+
+# guide
 st.info("HOW TO USE FILE FUSION..!!!")
-st.write("""  
+st.write("""
 ### 🔥 **Welcome to File Fusion!**  
-This app allows you to easily manage your files:  
+This app allows you to easily manage your files:
 
 ✅ **Supported File Types:** CSV, Excel, Text, PDF, Images (PNG, JPG, WEBP)  
 ✅ **Features:**  
@@ -37,11 +41,14 @@ This app allows you to easily manage your files:
 """)
 st.success("🎯 Tip: Expand this section anytime for guidance!")
 
+
+
 # Title / Description
 st.title("File Fusion")
 st.markdown("### One Tool for All Your File Needs.")
 
-#style
+
+# style
 st.markdown(
     """
     <style>
@@ -54,8 +61,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-#hooks
-st.info("📂 Drop your files here or click to upload",)
+# hooks
+st.info("📂 Drop your files here or click to upload")
 
 
 # File Uploader
@@ -65,6 +72,7 @@ uploaded_files = st.file_uploader(
     accept_multiple_files=True
 )
 
+
 # Process Uploaded Files
 if uploaded_files:
     for file in uploaded_files:
@@ -72,22 +80,21 @@ if uploaded_files:
         df = None  
         new_file_name = file.name  
 
-        # Read file extension
+        # Read file based on extension
         if file_ext == ".csv":
             df = pd.read_csv(file)
+
         elif file_ext == ".xlsx":
             df = pd.read_excel(file)
-        else:
-            st.error(f"❌ Unsupported file type: {file_ext}")
-            continue
 
-        
+
         # File Info
         st.success(f"✅ **Uploaded:** {file.name} ({file.size} bytes)")
 
-        #only for CSV and Excel
+        
+        # only for CSV and Excel
         if df is not None:
-            #tabs of csv and excel
+            # tabs of csv and excel
             preview_tab, dataCleaning_tab, conversion_tab, visual_tab, download_tab = st.tabs(
                 ["Preview", "Data Cleaning", "File Conversion", "Visualization", "Download"]
             )
@@ -113,7 +120,6 @@ if uploaded_files:
                             df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].mean())
                             st.write("✅ **Missing values filled with column mean!**")
 
-
             with conversion_tab:
                 st.subheader("📌 Select Columns")
                 columns = st.multiselect(
@@ -123,14 +129,12 @@ if uploaded_files:
                 )
                 df = df[columns]
 
-
                 if st.checkbox(f"🔄 Convert File: {file.name}"):
                     conversion_options = ["CSV", "Excel"]
                     conversion_type = st.radio(f"Choose conversion format for **{file.name}**:", conversion_options)
 
                     if st.button(f"Convert {file.name} to {conversion_type}"):
                         new_file_name = os.path.splitext(file.name)[0] + f".{conversion_type.lower()}"
-
 
                         if conversion_type == "CSV":
                             df.to_csv(buffer, index=False)
@@ -143,7 +147,6 @@ if uploaded_files:
 
                         buffer.seek(0)
 
-
                         st.success("✅ Your file has been successfully converted! You can now download it from the 'Download' tab. 🚀")
 
             with visual_tab:
@@ -151,7 +154,7 @@ if uploaded_files:
                 if st.checkbox(f"📉 Show Chart for **{file.name}**"):
                     st.bar_chart(df.select_dtypes(include=['number']).iloc[:, :2])
 
-
+        
             with download_tab:
                 if buffer.getvalue():
                     st.download_button(
@@ -171,6 +174,8 @@ if uploaded_files:
                     )
                     st.success("Thanks You For Using File Fusion")
 
+       
+        
         # FOR IMAGE FILES
         elif file_ext in [".png", ".jpg", ".jpeg", ".webp"]:
             preview_tab, conversion_tab, download_tab = st.tabs(["Preview", "File Conversion", "Download"])
