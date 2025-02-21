@@ -14,11 +14,13 @@ st.set_page_config(page_title="File Fusion", layout='wide')
 buffer = BytesIO()
 mime_type = "application/octet-stream"
 
-
+Col1 , Col2 = st.columns(2)
 
 # guide
 st.info("HOW TO USE FILE FUSION..!!!")
-st.write("""
+
+with Col1:
+    st.write("""
 ### 🔥 **Welcome to File Fusion!**  
 This app allows you to easily manage your files:
 
@@ -28,9 +30,10 @@ This app allows you to easily manage your files:
     -  **Clean Data** (Remove duplicates, Fill missing values)  
     -  **Convert Files** (CSV ↔ Excel, Image Format Change)  
     -  **Data Visualization** (Quick Charts)  
-    -  **Download Processed Files**  
+    -  **Download Processed Files**  """)
 
-🔹 **Steps to Use:**  
+with Col2:
+    st.write("""🔹 **Steps to Use:**  
 1 **Upload your file**  
 2 **Preview & clean data** (if applicable)  
 3 **Convert file to desired format**  
