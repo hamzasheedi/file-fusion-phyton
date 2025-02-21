@@ -14,17 +14,19 @@ st.set_page_config(page_title="File Fusion", layout='wide')
 buffer = BytesIO()
 mime_type = "application/octet-stream"
 
-Col1 , Col2 = st.columns(2)
+
 
 # guide
 st.info("HOW TO USE FILE FUSION..!!!")
+
+Col1 , Col2 = st.columns(2)
 
 with Col1:
     st.write("""
 ### 🔥 **Welcome to File Fusion!**  
 This app allows you to easily manage your files:
 
-✅ **Supported File Types:** CSV, Excel, Text, PDF, Images (PNG, JPG, WEBP)  
+✅ **Supported File Types:** CSV, Excel, Images (PNG, JPG, WEBP)  
 ✅ **Features:**  
     -  **Preview Files** before processing  
     -  **Clean Data** (Remove duplicates, Fill missing values)  
@@ -71,7 +73,7 @@ st.info("📂 Drop your files here or click to upload")
 # File Uploader
 uploaded_files = st.file_uploader(
     "📂",
-    type=["csv", "xlsx", "txt", "pdf", "jpg", "jpeg", "png", "webp"],
+    type=["csv", "xlsx","jpg", "jpeg", "png", "webp"],
     accept_multiple_files=True
 )
 
